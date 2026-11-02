@@ -1,11 +1,17 @@
 package com.pluralsight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
+    // constant for the csv file to storage path
+    private static final String FILE_NAME = "transactions.csv";
 
-    // main application entry point for Acoounting, Ledger and exit states Application
-
+    // main application entry point for Accounting, Ledger and exit states Application
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -28,7 +34,7 @@ public class AccountingLedgerApp {
                     break;
                 case "L":
                     // Route to make ledger screen
-                    System.out.println("-> Leeger screen selected.");
+                    System.out.println("-> Ledger screen selected.");
                 case "X":
                     running = false;
                     System.out.println("Exiting application. Thank you!");
@@ -50,7 +56,69 @@ public class AccountingLedgerApp {
         System.out.println("X) Exit");
         System.out.println("Enter your choice: ");
     }
-}
 
+        private static void addDeposit(Scanner scanner) {
+            System.out.println("\n--- ADD DEPOSIT ===");
 
+            System.out.print("Enter description: ");
+            String description = scanner.nextLine().trim();
 
+            System.out.print("Enter vendor/payor: ");
+            String vendor = scanner.nextLine().trim();
+
+            System.out.print("Enter deposit amount: ");
+            double amount = Double.parseDouble(scanner.nextLine().trim());
+
+            // convert payments to negative dollar value
+            amount = -Math.abs(amount);
+
+            // capture automated system timestamp
+            LocalDate date = LocalDate.now();
+            LocalTime time = LocalTime.now();
+
+            // Instantiate transaction and save
+
+            Transaction deposit = new Transaction(date, time, description, vendor, amount);
+            saveTransaction(deposit);
+        }
+
+            private static void makePayment(Scanner scanner){
+                System.out.println("\n--- MAKE PAYMENT ---");
+
+                System.out.print("Enter description: ");
+                String paymentDescription = scanner.nextLine().trim();
+
+                System.out.println("Enter vendor/payee: ");
+                String paymentVendor = scanner.nextLine().trim();
+
+                System.out.print("Enter amount: ");
+                double paymentAmount = Double.parseDouble(scanner.nextLine().trim());
+
+                // convert payments to negative dollar value
+                paymentAmount = -Math.abs(paymentAmount);
+
+                // capture automated system timestamp
+                LocalDate paymentDate = LocalDate.now();
+                LocalTime paymentTime = LocalTime.now();
+
+                // instantiate transaction and save
+                Transaction payment = new Transaction(
+                        paymentDate,
+                        paymentTime,
+                        paymentDescription,
+                        paymentVendor,
+                        paymentAmount
+                );
+                saveTransaction(payment);
+            }
+        private static void saveTransaction(Transaction transaction) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            writer.write(transaction.toCsvRow());
+            writer.newLine();
+            System.out.println("✓ Success: Transaction saved to " + FILE_NAME);
+        } catch (IOException e) {
+            System.out.println("❌ Unable to write transaction to file: " + e.getMessage());
+
+        }
+            }
+    }

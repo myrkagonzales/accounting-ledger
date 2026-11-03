@@ -215,7 +215,11 @@ public class AccountingLedgerApp {
     }
 
     private static void addDeposit(Scanner scanner) {
-        System.out.println("\n=== ADD DEPOSIT ===");
+        System.out.println(
+                GREEN +
+                        "\n===== ADD DEPOSIT =====" +
+                RESET
+        );
 
         System.out.print("Enter description: ");
         String description = scanner.nextLine().trim();
@@ -238,7 +242,11 @@ public class AccountingLedgerApp {
     }
 
     private static void makePayment(Scanner scanner) {
-        System.out.println("\n=== MAKE PAYMENT ===");
+        System.out.println(
+                RED +
+                        "\n===== PAYMENT ENTRY =====" +
+                RESET
+        );
 
         System.out.print("Enter description: ");
         String paymentDescription = scanner.nextLine().trim();

@@ -182,8 +182,6 @@ public class AccountingLedgerApp {
         System.out.print("Enter deposit amount: ");
         double amount = Double.parseDouble(scanner.nextLine().trim());
 
-        // convert payments to negative dollar value
-        amount = -Math.abs(amount);
 
         // capture automated system timestamp
         LocalDate date = LocalDate.now();
@@ -258,9 +256,7 @@ public class AccountingLedgerApp {
                 System.out.println(transaction);
             }
         }
-    private static void displayReports() {
-            System.out.println("Reports menu coming soon.");
-        }
+
     }
 
 }

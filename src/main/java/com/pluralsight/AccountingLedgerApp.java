@@ -231,10 +231,28 @@ public class AccountingLedgerApp {
     {
 
         System.out.println("\n=== EVERGREEN HOME MENU ===");
-        System.out.println("D) Add Deposit");
-        System.out.println("P) Make Payment (Debit)");
-        System.out.println("L) Ledger");
-        System.out.println("X) Exit");
+        System.out.println(
+                getText(
+                "D) Add Deposit",
+                 "D) Agregar Deposito"
+                )
+        );
+        System.out.println(
+                getText(
+                "P) Make Payment (Debit)",
+                        "P) Realizar Pago"
+                )
+        );
+        System.out.println(
+                getText("L) Ledger",
+                        "L) Libro Mayor"
+                )
+        );
+        System.out.println(
+                getText("X) Exit",
+                        "X) Salir"
+                )
+        );
 
         System.out.println("\nSelect an option: ");
     }

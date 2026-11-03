@@ -75,16 +75,16 @@ public class AccountingLedgerApp {
 
             switch (choice) {
                 case "D":
-                    // ROUTE TO ADD DEPOSIT METHOD
-                    System.out.println("-> Add Deposit selected.");
+                    // Route user to add deposit screen
+                    addDeposit(scanner);
                     break;
                 case "P":
-                    // Route to make payment method
-                    System.out.println("-> Make Payment selected.");
+                    // Route user to make payment screen
+                    makePayment(scanner);
                     break;
                 case "L":
-                    // Route to make ledger screen
-                    System.out.println("-> Ledger screen selected.");
+                    // Route to user to ledger menue
+                    displayLedgerMenu(scanner);
                 case "X":
                     running = false;
                     System.out.println("Exiting application. Thank you!");

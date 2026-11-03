@@ -1,15 +1,65 @@
 package com.pluralsight;
+import java.io.FileReader;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Scanner;
+import java.util.*;
 
 public class AccountingLedgerApp {
     // constant for the csv file to storage path
     private static final String FILE_NAME = "transactions.csv";
+
+    private static void displayLedgerMenu(Scanner scanner) {
+
+        while (inLedger) {
+            System.out.println("\n=== Ledger Menu === ");
+            System.out.println("A) All Entries");
+            System.out.println("D) Deposits Only");
+            System.out.println("P) Payments Only");
+            System.out.println("R) Reports");
+            System.out.println("H) Home");
+            System.out.print("Enter choice: ");
+            String choice = scanner.nextLine().trim().toUpperCase();
+        }
+    }
+
+
+            private static List<Transaction> loadTransactions() {
+                List<Transaction> transactions = new ArrayList<>();
+
+                try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+                String line;
+                while (line = reader.readLine() != null) {
+                    line = line.trim();
+                    if (line.isEmpty()) continue;
+
+                    // split line by pipe character "|"
+                    String [] parts = line.split("\\|");
+                    if (parts.length == 5) {
+                        LocalDate date = LocalDate.parse(parts[0].trim());
+                        LocalTime time = LocalTime.parse(parts[1].trim());
+                        String description = parts[2].trim();
+                        String vendor = parts[3].trim();
+                        double amount = Double.parseDouble(parts[4].trim());
+                        transactions.add(new Transaction((date, time, description, vendor, amount));
+                    }
+                }
+
+            switch (choice) {
+                case "A":
+                    displayTransactions();
+                    break;
+            }
+
+
+
+
+
+
+        }
+
+    }
 
     // main application entry point for Accounting, Ledger and exit states Application
 
@@ -112,13 +162,12 @@ public class AccountingLedgerApp {
                 saveTransaction(payment);
             }
         private static void saveTransaction(Transaction transaction) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
-            writer.write(transaction.toCsvRow());
-            writer.newLine();
-            System.out.println("✓ Success: Transaction saved to " + FILE_NAME);
-        } catch (IOException e) {
-            System.out.println("❌ Unable to write transaction to file: " + e.getMessage());
-
-        }
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+                writer.write(transaction.toCsvRow());
+                writer.newLine();
+                System.out.println("✓ Success: Transaction saved to " + FILE_NAME);
+            } catch (IOException e) {
+                System.out.println("❌ Unable to write transaction to file: " + e.getMessage());
             }
+        }
     }

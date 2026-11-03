@@ -45,8 +45,26 @@ public class Transaction {
     }
 
 
-    public String toCsvRow() {
-        return String.format("%s|%s|%s|%s|%.2f", date, time, description, vendor, amount);
 
+    public String toCsvRow() {
+        return String.format("%s|%s|%s|%s|%.2f",
+                date,
+                time,
+                description,
+                vendor,
+                amount
+        );
     }
-}
+
+        // format transaction for display in ledger screens
+        public String toString() {
+            return String.format(
+                    "%s | %s | %s | %s | $%.2f",
+                    date,
+                    time,
+                    description,
+                    vendor,
+                    amount
+            );
+        }
+    }

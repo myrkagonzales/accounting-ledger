@@ -91,14 +91,42 @@ public class AccountingLedgerApp {
                             "\n======= FINANCIAL REPORTS =======" +
                     RESET
         );
-            System.out.println("1) Month to Date");
-            System.out.println("2) Previous Month");
-            System.out.println("3) Year to Date");
-            System.out.println("4) Previous Year");
-            System.out.println("5) Search by Vendor");
-            System.out.println("0) Back");
+            System.out.println(
+                    getText("1) Month to Date",
+                            "1) Mes Actual"
+                    )
+            );
+            System.out.println(
+                    getText("2) Previous Month",
+                            "2) Mes Anterior"
+                    )
+            );
+            System.out.println(
+                    getText("3) Year to Date",
+                            "3) Ano Actual"
+                    )
+            );
+            System.out.println(
+                    getText("4) Previous Year", "4) Ano Anterior"
+                    )
+            );
+            System.out.println(
+                    getText("5) Search by Vendor",
+                            "5) Buscar por Proveedor"
+                    )
+            );
+            System.out.println(
+                    getText("0) Back",
+                            "0) Regresar"
+                    )
+            );
 
-            System.out.print("Enter choice: ");
+            System.out.print(
+                    getText("Enter choice: ",
+                            "Ingrese una opcion: "
+                    )
+            );
+
             String choice = scanner.nextLine().trim();
 
             switch (choice) {

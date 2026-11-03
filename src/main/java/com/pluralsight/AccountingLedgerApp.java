@@ -496,7 +496,10 @@ public class AccountingLedgerApp {
     {
         System.out.println(
                 CYAN +
-                        "\n===== VENDOR SEARCH =====" +
+                        "\n" +
+                        getText("===== VENDOR SEARCH =====",
+                                "===== BUSQUEDA DE PROVEEDOR ====="
+                        )+
                 RESET
         );
 
@@ -534,7 +537,10 @@ public class AccountingLedgerApp {
 
         System.out.println(
                 CYAN +
-                        "\n===== MONTH TO DATE REPORT =====" +
+                        "\n" +
+                        getText("===== MONTH TO DATE REPORT =====",
+                                "===== REPORTE DEL MES ACTUAL ====="
+                        ) +
                 RESET
         );
 
@@ -557,7 +563,11 @@ public class AccountingLedgerApp {
 
         System.out.println(
                 CYAN +
-                        "\n===== PREVIOUS MONTH REPORT =====" +
+                        "\n" +
+                        getText(
+                        "===== PREVIOUS MONTH REPORT =====",
+                                "===== REPORTE DEL MES ANTERIOR ====="
+                        ) +
                 RESET
         );
 
@@ -582,7 +592,11 @@ public class AccountingLedgerApp {
 
         System.out.println(
                 CYAN +
-                        "\n===== YEAR TO DATE REPORT =====" +
+                        "\n" +
+                        getText(
+                        "===== YEAR TO DATE REPORT =====",
+                        "===== REPORTE DEL ANO ACTUAL ====="
+                        ) +
                 RESET
         );
 
@@ -605,7 +619,10 @@ public class AccountingLedgerApp {
 
         System.out.println(
                 CYAN +
-                        "\n===== PREVIOUS YEAR REPORT =====" +
+                        "\n" +
+                        getText("===== PREVIOUS YEAR REPORT =====",
+                                "===== REPORTE DEL ANO ANTERIOR ====="
+                        ) +
                 RESET
         );
 

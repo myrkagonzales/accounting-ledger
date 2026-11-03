@@ -241,8 +241,16 @@ public class AccountingLedgerApp {
                 case "X":
                     running = false;
                     System.out.println(GREEN);
-                    System.out.println("\nThank you for using Evergreen Financial Services.");
-                    System.out.println("Session ended successfully.");
+                    System.out.println(
+                            getText("\nThank you for using Evergreen Financial Services.",
+                                    "\nGracias por utlilizar Evergreen Financial Services."
+                            )
+                    );
+                    System.out.println(
+                            getText("Session ended successfully.",
+                                    "Sesion finalizada exitosamente."
+                                    )
+                    );
                     System.out.println(RESET);
 
                     break;

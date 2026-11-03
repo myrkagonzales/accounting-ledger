@@ -50,8 +50,7 @@ public class AccountingLedgerApp {
     }
 
     // display reports menue and handle report selection
-    private static void displayReports(Scanner scanner)
-    {
+    private static void displayReports(Scanner scanner) {
         boolean inReports = true;
         while (inReports) {
             System.out.println("\n=== REPORTS ===");
@@ -65,8 +64,7 @@ public class AccountingLedgerApp {
             System.out.print("Enter choice: ");
             String choice = scanner.nextLine().trim();
 
-            switch (choice)
-            {
+            switch (choice) {
                 case "1":
                     displayMonthToDate();
                     break;
@@ -234,41 +232,40 @@ public class AccountingLedgerApp {
 
         }
     }
+
     // display all ledger entries newest first
-   private static void displayTransactions() {
+    private static void displayTransactions() {
         List<Transaction> transactions = loadTransactions();
-        for (int i = transactions.size() -1; i >= 0; i--)
-        {
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             System.out.println(transactions.get(i));
         }
     }
+
     // show deposits only with newest transactions first
     private static void displayDeposits() {
         List<Transaction> transactions = loadTransactions();
-        for (int i = transactions.size() -1; i >= 0; i--)
-        {
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
 
-            if(transaction.getAmount() > 0)
-            {
+            if (transaction.getAmount() > 0) {
                 System.out.println(transaction);
             }
         }
     }
+
     // show payments only with newest transaction first
     private static void displayPayments() {
-        List<Transaction>transactions = loadTransactions();
-        for(int i = transactions.size() -1; i >=0; i--)
-        {
+        List<Transaction> transactions = loadTransactions();
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
 
-            if (transaction.getAmount() < 0)
-            {
+            if (transaction.getAmount() < 0) {
                 System.out.println(transaction);
             }
         }
 
     }
+
     // search and display all transactions for a specific vendor
     {
         System.out.print("Enter vendor name: ");
@@ -276,21 +273,31 @@ public class AccountingLedgerApp {
 
         List<Transaction> transactions = loadTransactions();
         boolean found = false;
-        for(int i = transactions.size() -1; i >= 0; i--)
-        {
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
-            if(transaction.getVendor().equalsIgnoreCase(vendor))
-            {
+            if (transaction.getVendor().equalsIgnoreCase(vendor)) {
                 System.out.println(transaction);
                 found = true;
             }
         }
-        if(!found)
-        {
+        if (!found) {
             System.out.println("No transactions found for vendor: " + vendor);
 
         }
 
     }
+    // display transactions from the current month
+    private static void displayMonthToDate() {
+        LocalDate today = LocalDate.now();
 
-}
+        List<Transaction> transactions = loadTransactions();
+
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction transaction = transactions.get(i);
+            if (transaction.getDate().getMonth() == today.getMonth()
+                    && transaction.getDate().getYear() == today.getYear()) {
+                System.out.println(transaction);
+            }
+        }
+    }
+

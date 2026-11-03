@@ -378,9 +378,14 @@ public class AccountingLedgerApp {
             writer.newLine();
             System.out.println(
                     GREEN +
-                            "✓ Transaction successfully saved." +
+                            getText(
+                            "✓ Transaction successfully saved.",
+                                    "✓ Transaccion guardada exitosamente."
+                            ) +
                             RESET
+
             );
+
         } catch (IOException e) {
             System.out.println("Error reading transactions file: " + e.getMessage());
 

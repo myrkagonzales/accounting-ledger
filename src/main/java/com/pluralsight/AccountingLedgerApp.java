@@ -11,6 +11,7 @@ public class AccountingLedgerApp {
     private static final String FILE_NAME = "transactions.csv";
 
     private static void displayLedgerMenu(Scanner scanner) {
+        boolean inLedger = true;
 
         while (inLedger) {
             System.out.println("\n=== Ledger Menu === ");
@@ -20,46 +21,65 @@ public class AccountingLedgerApp {
             System.out.println("R) Reports");
             System.out.println("H) Home");
             System.out.print("Enter choice: ");
+
             String choice = scanner.nextLine().trim().toUpperCase();
-        }
-    }
-
-
-            private static List<Transaction> loadTransactions() {
-                List<Transaction> transactions = new ArrayList<>();
-
-                try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
-                String line;
-                while (line = reader.readLine() != null) {
-                    line = line.trim();
-                    if (line.isEmpty()) continue;
-
-                    // split line by pipe character "|"
-                    String [] parts = line.split("\\|");
-                    if (parts.length == 5) {
-                        LocalDate date = LocalDate.parse(parts[0].trim());
-                        LocalTime time = LocalTime.parse(parts[1].trim());
-                        String description = parts[2].trim();
-                        String vendor = parts[3].trim();
-                        double amount = Double.parseDouble(parts[4].trim());
-                        transactions.add(new Transaction((date, time, description, vendor, amount));
-                    }
-                }
 
             switch (choice) {
                 case "A":
                     displayTransactions();
                     break;
+                case "D":
+                    displayDeposits();
+                    break;
+                case "P":
+                    displayPayments();
+                    break;
+                case "R":
+                    displayReports();
+                    break;
+                case "H":
+                    inLedger = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+
+
             }
 
-
-
-
-
-
         }
-
     }
+
+    private static List<Transaction> loadTransactions() {
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                // split line by pipe character "|"
+                String[] parts = line.split("\\|");
+                if (parts.length == 5) {
+                    LocalDate date = LocalDate.parse(parts[0].trim());
+                    LocalTime time = LocalTime.parse(parts[1].trim());
+                    String description = parts[2].trim();
+                    String vendor = parts[3].trim();
+                    double amount = Double.parseDouble(parts[4].trim());
+                    transactions.add(new Transaction(
+                            date,
+                            time,
+                            description,
+                            vendor,
+                            amount));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return transactions;
+    }
+
 
     // main application entry point for Accounting, Ledger and exit states Application
 
@@ -107,67 +127,97 @@ public class AccountingLedgerApp {
         System.out.println("Enter your choice: ");
     }
 
-        private static void addDeposit(Scanner scanner) {
-            System.out.println("\n--- ADD DEPOSIT ===");
+    private static void addDeposit(Scanner scanner) {
+        System.out.println("\n--- ADD DEPOSIT ===");
 
-            System.out.print("Enter description: ");
-            String description = scanner.nextLine().trim();
+        System.out.print("Enter description: ");
+        String description = scanner.nextLine().trim();
 
-            System.out.print("Enter vendor/payor: ");
-            String vendor = scanner.nextLine().trim();
+        System.out.print("Enter vendor/payor: ");
+        String vendor = scanner.nextLine().trim();
 
-            System.out.print("Enter deposit amount: ");
-            double amount = Double.parseDouble(scanner.nextLine().trim());
+        System.out.print("Enter deposit amount: ");
+        double amount = Double.parseDouble(scanner.nextLine().trim());
 
-            // convert payments to negative dollar value
-            amount = -Math.abs(amount);
+        // convert payments to negative dollar value
+        amount = -Math.abs(amount);
 
-            // capture automated system timestamp
-            LocalDate date = LocalDate.now();
-            LocalTime time = LocalTime.now();
+        // capture automated system timestamp
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
 
-            // Instantiate transaction and save
+        // Instantiate transaction and save
 
-            Transaction deposit = new Transaction(date, time, description, vendor, amount);
-            saveTransaction(deposit);
+        Transaction deposit = new Transaction(date, time, description, vendor, amount);
+        saveTransaction(deposit);
+    }
+
+    private static void makePayment(Scanner scanner) {
+        System.out.println("\n--- MAKE PAYMENT ---");
+
+        System.out.print("Enter description: ");
+        String paymentDescription = scanner.nextLine().trim();
+
+        System.out.println("Enter vendor: ");
+        String paymentVendor = scanner.nextLine().trim();
+
+        System.out.print("Enter amount: ");
+        double paymentAmount = Double.parseDouble(scanner.nextLine().trim());
+
+        // convert payments to negative dollar value
+        paymentAmount = -Math.abs(paymentAmount);
+
+        // capture automated system timestamp
+        LocalDate paymentDate = LocalDate.now();
+        LocalTime paymentTime = LocalTime.now();
+
+        // instantiate transaction and save
+        Transaction payment = new Transaction(
+                paymentDate,
+                paymentTime,
+                paymentDescription,
+                paymentVendor,
+                paymentAmount
+        );
+        saveTransaction(payment);
+    }
+
+    private static void saveTransaction(Transaction transaction) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            writer.write(transaction.toCsvRow());
+            writer.newLine();
+            System.out.println("✓ Success: Transaction saved to " + FILE_NAME);
+        } catch (IOException e) {
+            System.out.println("Error reading transactions file: " + e.getMessage());
+
+
         }
+    }
 
-            private static void makePayment(Scanner scanner){
-                System.out.println("\n--- MAKE PAYMENT ---");
-
-                System.out.print("Enter description: ");
-                String paymentDescription = scanner.nextLine().trim();
-
-                System.out.println("Enter vendor/payee: ");
-                String paymentVendor = scanner.nextLine().trim();
-
-                System.out.print("Enter amount: ");
-                double paymentAmount = Double.parseDouble(scanner.nextLine().trim());
-
-                // convert payments to negative dollar value
-                paymentAmount = -Math.abs(paymentAmount);
-
-                // capture automated system timestamp
-                LocalDate paymentDate = LocalDate.now();
-                LocalTime paymentTime = LocalTime.now();
-
-                // instantiate transaction and save
-                Transaction payment = new Transaction(
-                        paymentDate,
-                        paymentTime,
-                        paymentDescription,
-                        paymentVendor,
-                        paymentAmount
-                );
-                saveTransaction(payment);
-            }
-        private static void saveTransaction(Transaction transaction) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
-                writer.write(transaction.toCsvRow());
-                writer.newLine();
-                System.out.println("✓ Success: Transaction saved to " + FILE_NAME);
-            } catch (IOException e) {
-                System.out.println("❌ Unable to write transaction to file: " + e.getMessage());
+   private static void displayTransactions() {
+        List<Transaction> transactions = loadTransactions();
+        for (Transaction transaction : transactions) {
+            System.out.println(transaction);
+        }
+    }
+    private static void displayDeposits() {
+        List<Transaction> transactions = loadTransactions();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() > 0) {
+                System.out.println(transaction);
             }
         }
     }
+    private static void displayPayments() {
+        List<Transaction>transactions = loadTransactions();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() < 0) {
+                System.out.println(transaction);
+            }
+        }
+    private static void displayReports() {
+            System.out.println("Reports menu coming soon.");
+        }
+    }
+
+}

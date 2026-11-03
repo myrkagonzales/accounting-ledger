@@ -250,7 +250,11 @@ public class AccountingLedgerApp {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
             writer.write(transaction.toCsvRow());
             writer.newLine();
-            System.out.println("✓ Success: Transaction saved to " + FILE_NAME);
+            System.out.println(
+                    GREEN +
+                            "✓ Transaction successfully saved." +
+                            RESET
+            );
         } catch (IOException e) {
             System.out.println("Error reading transactions file: " + e.getMessage());
 

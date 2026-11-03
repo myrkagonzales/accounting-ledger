@@ -292,13 +292,27 @@ public class AccountingLedgerApp {
                 RESET
         );
 
-        System.out.print("Enter description: ");
+        System.out.print(
+                getText("Enter description: ",
+                        "Ingrese descripcion: "
+                )
+        );
         String description = scanner.nextLine().trim();
 
-        System.out.print("Enter vendor: ");
+        System.out.print(
+                getText("Enter vendor: ",
+                        "Ingrese proveedor: "
+                )
+        );
+
         String vendor = scanner.nextLine().trim();
 
-        System.out.print("Enter deposit amount: ");
+        System.out.print(
+                getText("Enter deposit amount: ",
+                        "Ingrese monto de depsosito: "
+                )
+        );
+
         double amount = Double.parseDouble(scanner.nextLine().trim());
 
 

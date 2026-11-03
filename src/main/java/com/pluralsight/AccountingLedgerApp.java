@@ -234,11 +234,12 @@ public class AccountingLedgerApp {
 
         }
     }
-
+    // display all ledger entries newest first
    private static void displayTransactions() {
         List<Transaction> transactions = loadTransactions();
-        for (Transaction transaction : transactions) {
-            System.out.println(transaction);
+        for (int i = transactions.size() -1; i >= 0; i--)
+        {
+            System.out.println(transactions.get(i));
         }
     }
     private static void displayDeposits() {

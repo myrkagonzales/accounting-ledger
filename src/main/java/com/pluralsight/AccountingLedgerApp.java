@@ -320,4 +320,22 @@ public class AccountingLedgerApp {
         }
     }
 
+    // display transactions from the current year
+    private static void displayYearToDate()
+    {
+        int currentYear = LocalDate.now().getYear();
+
+        List<Transaction> transactions = loadTransactions();
+
+        for(int i = transactions.size() -1; i >= 0; i --)
+        {
+            Transaction transaction = transactions.get(i);
+            if (transaction.getDate().getYear() == currentYear)
+            {
+                System.out.println(transaction);
+            }
+        }
+    }
+    // display transactions from the previous year
+
 }

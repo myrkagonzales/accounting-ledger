@@ -500,7 +500,11 @@ public class AccountingLedgerApp {
                 RESET
         );
 
-        System.out.print("Enter vendor name: ");
+        System.out.print(
+                getText("Enter vendor name: ",
+                        "Ingrese nombre del proveedor: "
+                        )
+        );
         String searchByVendor = scanner.nextLine().trim();
 
         List<Transaction> transactions = loadTransactions();
@@ -515,7 +519,11 @@ public class AccountingLedgerApp {
             }
         }
         if (!found) {
-            System.out.println("No transactions found for vendor: " + searchByVendor);
+            System.out.println(
+                    getText("No transactions found for vendor: " + searchByVendor,
+                            "No se encontraron transacciones para el proveedor: "
+                    )
+            );
 
         }
 

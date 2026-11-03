@@ -146,6 +146,7 @@ public class AccountingLedgerApp {
                 case "L":
                     // Route to user to ledger menu
                     displayLedgerMenu(scanner);
+                    break;
                 case "X":
                     running = false;
                     System.out.println("Exiting application. Thank you!");

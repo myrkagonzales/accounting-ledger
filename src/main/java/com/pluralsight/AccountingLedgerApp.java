@@ -19,6 +19,16 @@ public class AccountingLedgerApp {
     // tracks selected language
     private static String language = "EN";
 
+    // returns English or spanish text based on selected language
+    private static String getText(String english, String spanish)
+    {
+        if(language.equals("ES"))
+        {
+            return spanish;
+        }
+        return english;
+    }
+
 
     private static void displayLedgerMenu(Scanner scanner) {
         boolean inLedger = true;

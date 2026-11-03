@@ -21,11 +21,13 @@ public class AccountingLedgerApp {
         boolean inLedger = true;
 
         while (inLedger) {
-            System.out.println(
-                    CYAN +
-                            "\n========== EVERGREEN LEDGER ==========" +
-                    RESET
-            );
+
+            displayBalance();
+
+            System.out.println(CYAN);
+            System.out.println("\n========== EVERGREEN LEDGER ==========");
+            System.out.println(RESET);
+
             System.out.println("A) All Entries");
             System.out.println("D) Deposits Only");
             System.out.println("P) Payments Only");
@@ -293,6 +295,22 @@ public class AccountingLedgerApp {
             }
         }
 
+    }
+
+    // Calculate and display current account balance
+    private static void displayBalance()
+    {
+        List<Transaction> transactions = loadTransactions();
+
+        double balance = 0;
+        for (Transaction transaction : transactions)
+        {
+            balance += transaction.getAmount();
+        }
+        System.out.printf(
+                GREEN + "\nCurrent Account Balance: $%.2f\n" + RESET,
+                balance
+        );
     }
 
     // search and display all transactions for a specific vendor

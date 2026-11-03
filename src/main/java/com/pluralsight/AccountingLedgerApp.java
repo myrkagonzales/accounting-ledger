@@ -24,9 +24,16 @@ public class AccountingLedgerApp {
 
             displayBalance();
 
-            System.out.println(CYAN);
-            System.out.println("\n========== EVERGREEN LEDGER ==========");
-            System.out.println(RESET);
+            System.out.println(
+                    GREEN +
+                            "\nWelcome to Evergreen Financial Services" +
+                    RESET
+            );
+            System.out.println(
+                    CYAN +
+                            "\n========== EVERGREEN LEDGER ==========" +
+                    RESET
+            );
 
             System.out.println("A) All Entries");
             System.out.println("D) Deposits Only");
@@ -146,8 +153,22 @@ public class AccountingLedgerApp {
         // loop between home, ledger
         boolean running = true;
 
+        System.out.println(GREEN);
+        System.out.println("Welcome to Evergreen Financial Services.");
+        System.out.println("Secure. Reliable. Professional");
+        System.out.println(RESET);
+
+        System.out.println(BLUE);
+        System.out.println("================================================");
+        System.out.println("         EVERGREEN FINANCIAL SERVICES");
+        System.out.println("              LEDGER SYSTEM");
+        System.out.println("================================================");
+        System.out.println(RESET);
+
         // core application loop: continues executing until user selects 'X' (exit)
         while (running) {
+
+
             displayHomeScreen();
             String choice = scanner.nextLine().trim().toUpperCase();
 
@@ -179,12 +200,6 @@ public class AccountingLedgerApp {
 
     private static void displayHomeScreen()
     {
-        System.out.println(BLUE);
-        System.out.println("================================================");
-        System.out.println("         EVERGREEN FINANCIAL SERVICES");
-        System.out.println("              LEDGER SYSTEM");
-        System.out.println("================================================");
-        System.out.println(RESET);
 
         System.out.println("\n=== Accounts Ledger Home ===");
         System.out.println("D) Add Deposit");
@@ -266,7 +281,11 @@ public class AccountingLedgerApp {
 
     // display all ledger entries newest first
     private static void displayTransactions() {
+
+        System.out.println("\n===== ALL TRANSACTIONS =====");
+
         List<Transaction> transactions = loadTransactions();
+
         for (int i = transactions.size() - 1; i >= 0; i--) {
             System.out.println(transactions.get(i));
         }
@@ -274,7 +293,11 @@ public class AccountingLedgerApp {
 
     // show deposits only with newest transactions first
     private static void displayDeposits() {
+
+        System.out.println("\n===== DEPOSIT TRANSACTIONS =====");
+
         List<Transaction> transactions = loadTransactions();
+
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
 
@@ -286,7 +309,11 @@ public class AccountingLedgerApp {
 
     // show payments only with newest transaction first
     private static void displayPayments() {
+
+        System.out.println("\n===== PAYMENT TRANSACTIONS =====");
+
         List<Transaction> transactions = loadTransactions();
+
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
 
@@ -316,10 +343,13 @@ public class AccountingLedgerApp {
     // search and display all transactions for a specific vendor
     private static void searchByVendor(Scanner scanner)
     {
+        System.out.println("\n===== VENDOR SEARCH =====");
+
         System.out.print("Enter vendor name: ");
         String searchByVendor = scanner.nextLine().trim();
 
         List<Transaction> transactions = loadTransactions();
+
         boolean found = false;
         for (int i = transactions.size() - 1; i >= 0; i--)
         {
@@ -338,7 +368,11 @@ public class AccountingLedgerApp {
 
     // display transactions from the current month
     private static void displayMonthToDate() {
+
+        System.out.println("\n===== MONTH TO DATE REPORT =====");
+
         LocalDate today = LocalDate.now();
+
         List<Transaction> transactions = loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
@@ -353,6 +387,9 @@ public class AccountingLedgerApp {
     // display transactions from the previous month
     private static void displayPreviousMonth()
     {
+
+        System.out.println("\n===== PREVIOUS MONTH REPORT =====");
+
         LocalDate previousMonth = LocalDate.now().minusMonths(1);
 
         List<Transaction> transactions = loadTransactions();
@@ -371,6 +408,9 @@ public class AccountingLedgerApp {
     // display transactions from the current year
     private static void displayYearToDate()
     {
+
+        System.out.println("\n===== YEAR TO DATE REPORT =====");
+
         int currentYear = LocalDate.now().getYear();
 
         List<Transaction> transactions = loadTransactions();
@@ -387,9 +427,13 @@ public class AccountingLedgerApp {
     // display transactions from the previous year
     private static void displayPreviousYear()
     {
+
+        System.out.println("\n===== PREVIOUS YEAR REPORT =====");
+
         int previousYear = LocalDate.now().minusYears(1).getYear();
 
         List<Transaction> transactions = loadTransactions();
+
         for (int i = transactions.size() -1; i >= 0; i--)
         {
             Transaction transaction = transactions.get(i);

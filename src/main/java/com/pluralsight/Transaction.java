@@ -1,14 +1,21 @@
 package com.pluralsight;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 
-import java.time.LocalDateTime;
+
+
 
 // transaction class representing a single financial record in the ledger.
-// encapsulates transaction date, time, description, vendor, and dollar amount
-
 public class Transaction {
+
+    // format time as HH:mm:ss
+    private static final DateTimeFormatter TIME_FORMAT
+            = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+
+    // encapsulates transaction date, time, description, vendor, and dollar amount
     private LocalDate date;
     private LocalTime time;
     private String description;
@@ -49,7 +56,7 @@ public class Transaction {
     public String toCsvRow() {
         return String.format("%s|%s|%s|%s|%.2f",
                 date,
-                time,
+                time.format(TIME_FORMAT),
                 description,
                 vendor,
                 amount

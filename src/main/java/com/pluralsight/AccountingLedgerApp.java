@@ -1,5 +1,6 @@
 package com.pluralsight;
 import java.io.FileReader;
+import java.time.format.DateTimeFormatter;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -10,11 +11,14 @@ public class AccountingLedgerApp {
     // constant for the csv file to storage path
     private static final String FILE_NAME = "transactions.csv";
 
+    // Date Format constant
+    private static final DateTimeFormatter TIME_FORMAT =  DateTimeFormatter.ofPattern("HH:mm:ss");
+
     private static void displayLedgerMenu(Scanner scanner) {
         boolean inLedger = true;
 
         while (inLedger) {
-            System.out.println("\n=== Ledger Menu === ");
+            System.out.println("\n=== LEDGER MENU === ");
             System.out.println("A) All Entries");
             System.out.println("D) Deposits Only");
             System.out.println("P) Payments Only");
@@ -122,7 +126,7 @@ public class AccountingLedgerApp {
     }
 
 
-    // main application entry point for Accounting, Ledger and exit states Application
+    // main entry poin for the accounting ledger application
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -144,7 +148,7 @@ public class AccountingLedgerApp {
                     makePayment(scanner);
                     break;
                 case "L":
-                    // Route to user to ledger menu
+                    // Route user to ledger menu
                     displayLedgerMenu(scanner);
                     break;
                 case "X":

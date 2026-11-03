@@ -35,7 +35,7 @@ public class AccountingLedgerApp {
                     displayPayments();
                     break;
                 case "R":
-                    displayReports();
+                    displayReports(scanner);
                     break;
                 case "H":
                     inLedger = false;
@@ -49,7 +49,7 @@ public class AccountingLedgerApp {
         }
     }
 
-    // display reports menue and handle report selection
+    // display reports menu and handle report selection
     private static void displayReports(Scanner scanner) {
         boolean inReports = true;
         while (inReports) {
@@ -144,7 +144,7 @@ public class AccountingLedgerApp {
                     makePayment(scanner);
                     break;
                 case "L":
-                    // Route to user to ledger menue
+                    // Route to user to ledger menu
                     displayLedgerMenu(scanner);
                 case "X":
                     running = false;
@@ -267,21 +267,23 @@ public class AccountingLedgerApp {
     }
 
     // search and display all transactions for a specific vendor
+    private static void searchByVendor(Scanner scanner)
     {
         System.out.print("Enter vendor name: ");
-        String vendor = scanner.nextLine().trim();
+        String searchByVendor = scanner.nextLine().trim();
 
         List<Transaction> transactions = loadTransactions();
         boolean found = false;
-        for (int i = transactions.size() - 1; i >= 0; i--) {
+        for (int i = transactions.size() - 1; i >= 0; i--)
+        {
             Transaction transaction = transactions.get(i);
-            if (transaction.getVendor().equalsIgnoreCase(vendor)) {
+            if (transaction.getVendor().equalsIgnoreCase(searchByVendor)) {
                 System.out.println(transaction);
                 found = true;
             }
         }
         if (!found) {
-            System.out.println("No transactions found for vendor: " + vendor);
+            System.out.println("No transactions found for vendor: " + searchByVendor);
 
         }
 
@@ -290,7 +292,6 @@ public class AccountingLedgerApp {
     // display transactions from the current month
     private static void displayMonthToDate() {
         LocalDate today = LocalDate.now();
-
         List<Transaction> transactions = loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {

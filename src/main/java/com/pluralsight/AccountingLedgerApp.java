@@ -337,5 +337,20 @@ public class AccountingLedgerApp {
         }
     }
     // display transactions from the previous year
+    private static void displayPreviousYear()
+    {
+        int previousYear = LocalDate.now().minusYears(1).getYear();
+
+        List<Transaction> transactions = loadTransactions();
+        for (int i = transactions.size() -1; i >= 0; i--)
+        {
+            Transaction transaction = transactions.get(i);
+
+            if(transaction.getDate().getYear() == previousYear)
+            {
+                System.out.println(transaction);
+            }
+        }
+    }
 
 }

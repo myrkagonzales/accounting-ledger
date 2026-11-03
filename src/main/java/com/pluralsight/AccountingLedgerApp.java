@@ -49,6 +49,49 @@ public class AccountingLedgerApp {
         }
     }
 
+    // display reports menue and handle report selection
+    private static void displayReports(Scanner scanner)
+    {
+        boolean inReports = true;
+        while (inReports) {
+            System.out.println("\n=== REPORTS ===");
+            System.out.println("1) Month to Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year to Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("0) Back");
+
+            System.out.print("Enter choice: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice)
+            {
+                case "1":
+                    displayMonthToDate();
+                    break;
+                case "2":
+                    displayPreviousMonth();
+                    break;
+                case "3":
+                    displayYearToDate();
+                    break;
+                case "4":
+                    displayPreviousYear();
+                    break;
+                case "5":
+                    searchByVendor(scanner);
+                    break;
+                case "0":
+                    inReports = false;
+                    break;
+                default:
+                    System.out.println("Invalid option.");
+
+            }
+        }
+    }
+
     private static List<Transaction> loadTransactions() {
         List<Transaction> transactions = new ArrayList<>();
 
@@ -133,7 +176,7 @@ public class AccountingLedgerApp {
         System.out.print("Enter description: ");
         String description = scanner.nextLine().trim();
 
-        System.out.print("Enter vendor/payor: ");
+        System.out.print("Enter vendor: ");
         String vendor = scanner.nextLine().trim();
 
         System.out.print("Enter deposit amount: ");

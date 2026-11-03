@@ -21,7 +21,11 @@ public class AccountingLedgerApp {
         boolean inLedger = true;
 
         while (inLedger) {
-            System.out.println("\n=== LEDGER MENU === ");
+            System.out.println(
+                    CYAN +
+                            "\n========== EVERGREEN LEDGER ==========" +
+                    RESET
+            );
             System.out.println("A) All Entries");
             System.out.println("D) Deposits Only");
             System.out.println("P) Payments Only");

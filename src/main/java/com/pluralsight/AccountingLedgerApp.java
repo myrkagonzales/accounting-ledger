@@ -242,18 +242,28 @@ public class AccountingLedgerApp {
             System.out.println(transactions.get(i));
         }
     }
+    // show deposits only with newest transactions first
     private static void displayDeposits() {
         List<Transaction> transactions = loadTransactions();
-        for (Transaction transaction : transactions) {
-            if (transaction.getAmount() > 0) {
+        for (int i = transactions.size() -1; i >= 0; i--)
+        {
+            Transaction transaction = transactions.get(i);
+
+            if(transaction.getAmount() > 0)
+            {
                 System.out.println(transaction);
             }
         }
     }
+    // show payments only with newest transaction first
     private static void displayPayments() {
         List<Transaction>transactions = loadTransactions();
-        for (Transaction transaction : transactions) {
-            if (transaction.getAmount() < 0) {
+        for(int i = transactions.size() -1; i >=0; i--)
+        {
+            Transaction transaction = transactions.get(i);
+
+            if (transaction.getAmount() < 0)
+            {
                 System.out.println(transaction);
             }
         }

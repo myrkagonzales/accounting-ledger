@@ -373,8 +373,10 @@ public class AccountingLedgerApp {
             );
         }
         System.out.println(
+                CYAN +
                 "Total Transactions: "
-                + transactions.size()
+                + transactions.size() +
+                RESET
         );
     }
 

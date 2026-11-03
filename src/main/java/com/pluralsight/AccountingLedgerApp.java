@@ -1,4 +1,6 @@
 package com.pluralsight;
+import jdk.swing.interop.SwingInterOpUtils;
+
 import java.io.FileReader;
 import java.io.*;
 import java.time.LocalDate;
@@ -13,7 +15,7 @@ public class AccountingLedgerApp {
     private static final String RESET = "\u001B[0m";
     private static final String GREEN = "\u001B[32m";
     private static final String BLUE = "\u001B[34m";
-    private static final String Red = "\u001B[31m";
+    private static final String RED = "\u001B[31m";
     private static final String CYAN = "\u001B[36m";
 
 
@@ -154,7 +156,7 @@ public class AccountingLedgerApp {
         boolean running = true;
 
         System.out.println(GREEN);
-        System.out.println("Welcome to Evergreen Financial Services.");
+        System.out.println("Evergreen Financial Services");
         System.out.println("Secure. Reliable. Professional");
         System.out.println(RESET);
 
@@ -187,7 +189,11 @@ public class AccountingLedgerApp {
                     break;
                 case "X":
                     running = false;
-                    System.out.println("Exiting application. Thank you!");
+                    System.out.println(GREEN);
+                    System.out.println("\nThank you for using Evergreen Financial Services.");
+                    System.out.println("Session ended successfully.");
+                    System.out.println(RESET);
+
                     break;
                 default:
                     System.out.println("Invalid option. Please select D, P, L, or X.");
@@ -201,7 +207,7 @@ public class AccountingLedgerApp {
     private static void displayHomeScreen()
     {
 
-        System.out.println("\n=== Accounts Ledger Home ===");
+        System.out.println("\n=== EVERGREEN HOME MENU ===");
         System.out.println("D) Add Deposit");
         System.out.println("P) Make Payment (Debit)");
         System.out.println("L) Ledger");
@@ -234,7 +240,7 @@ public class AccountingLedgerApp {
     }
 
     private static void makePayment(Scanner scanner) {
-        System.out.println("\n--- MAKE PAYMENT ---");
+        System.out.println("\n=== MAKE PAYMENT ===");
 
         System.out.print("Enter description: ");
         String paymentDescription = scanner.nextLine().trim();
@@ -282,7 +288,11 @@ public class AccountingLedgerApp {
     // display all ledger entries newest first
     private static void displayTransactions() {
 
-        System.out.println("\n===== ALL TRANSACTIONS =====");
+        System.out.println(
+                CYAN +
+                        "\n===== ALL TRANSACTIONS =====" +
+                RESET
+        );
 
         List<Transaction> transactions = loadTransactions();
 
@@ -294,7 +304,11 @@ public class AccountingLedgerApp {
     // show deposits only with newest transactions first
     private static void displayDeposits() {
 
-        System.out.println("\n===== DEPOSIT TRANSACTIONS =====");
+        System.out.println(
+                CYAN +
+                        "\n===== DEPOSIT TRANSACTIONS =====" +
+                RESET
+        );
 
         List<Transaction> transactions = loadTransactions();
 
@@ -310,7 +324,11 @@ public class AccountingLedgerApp {
     // show payments only with newest transaction first
     private static void displayPayments() {
 
-        System.out.println("\n===== PAYMENT TRANSACTIONS =====");
+        System.out.println(
+                CYAN +
+                        "\n===== PAYMENT TRANSACTIONS =====" +
+                RESET
+        );
 
         List<Transaction> transactions = loadTransactions();
 
@@ -334,16 +352,34 @@ public class AccountingLedgerApp {
         {
             balance += transaction.getAmount();
         }
-        System.out.printf(
-                GREEN + "\nCurrent Account Balance: $%.2f\n" + RESET,
-                balance
+        if (balance >= 0)
+        {
+            System.out.printf(
+                    GREEN + "\nCurrent Account Balance: $%.2f\n" + RESET,
+                    balance
+            );
+        }
+        else
+        {
+            System.out.printf(
+                    RED + "\nCurrent Account Balance: $%.2f\n" + RESET,
+                    balance
+            );
+        }
+        System.out.println(
+                "Total Transactions: "
+                + transactions.size()
         );
     }
 
     // search and display all transactions for a specific vendor
     private static void searchByVendor(Scanner scanner)
     {
-        System.out.println("\n===== VENDOR SEARCH =====");
+        System.out.println(
+                CYAN +
+                        "\n===== VENDOR SEARCH =====" +
+                RESET
+        );
 
         System.out.print("Enter vendor name: ");
         String searchByVendor = scanner.nextLine().trim();
@@ -369,7 +405,11 @@ public class AccountingLedgerApp {
     // display transactions from the current month
     private static void displayMonthToDate() {
 
-        System.out.println("\n===== MONTH TO DATE REPORT =====");
+        System.out.println(
+                CYAN +
+                        "\n===== MONTH TO DATE REPORT =====" +
+                RESET
+        );
 
         LocalDate today = LocalDate.now();
 
@@ -388,7 +428,11 @@ public class AccountingLedgerApp {
     private static void displayPreviousMonth()
     {
 
-        System.out.println("\n===== PREVIOUS MONTH REPORT =====");
+        System.out.println(
+                CYAN +
+                        "\n===== PREVIOUS MONTH REPORT =====" +
+                RESET
+        );
 
         LocalDate previousMonth = LocalDate.now().minusMonths(1);
 
@@ -409,7 +453,11 @@ public class AccountingLedgerApp {
     private static void displayYearToDate()
     {
 
-        System.out.println("\n===== YEAR TO DATE REPORT =====");
+        System.out.println(
+                CYAN +
+                        "\n===== YEAR TO DATE REPORT =====" +
+                RESET
+        );
 
         int currentYear = LocalDate.now().getYear();
 
@@ -428,7 +476,11 @@ public class AccountingLedgerApp {
     private static void displayPreviousYear()
     {
 
-        System.out.println("\n===== PREVIOUS YEAR REPORT =====");
+        System.out.println(
+                CYAN +
+                        "\n===== PREVIOUS YEAR REPORT =====" +
+                RESET
+        );
 
         int previousYear = LocalDate.now().minusYears(1).getYear();
 

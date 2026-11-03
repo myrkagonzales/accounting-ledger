@@ -163,7 +163,7 @@ public class AccountingLedgerApp {
     private static void displayHomeScreen() {
         System.out.println("\n=== Accounts Ledger Home ===");
         System.out.println("D) Add Deposit");
-        System.out.println("P Make Payment (Debit)");
+        System.out.println("P) Make Payment (Debit)");
         System.out.println("L) Ledger");
         System.out.println("X) Exit");
         System.out.println("Enter your choice: ");

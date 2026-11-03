@@ -1,6 +1,4 @@
 package com.pluralsight;
-import jdk.swing.interop.SwingInterOpUtils;
-
 import java.io.FileReader;
 import java.io.*;
 import java.time.LocalDate;

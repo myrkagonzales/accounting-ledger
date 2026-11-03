@@ -166,6 +166,18 @@ public class AccountingLedgerApp {
         // loop between home, ledger
         boolean running = true;
 
+        System.out.println("Select Language / Seleccione Idioma");
+        System.out.println("1) English");
+        System.out.println("2) Espanol");
+        System.out.print("Choice: ");
+
+        String languageChoice = scanner.nextLine();
+
+        if(languageChoice.equals("2"))
+        {
+            language = "ES";
+        }
+
         System.out.println(GREEN);
         System.out.println("Evergreen Financial Services");
         System.out.println("Secure. Reliable. Professional");

@@ -286,6 +286,7 @@ public class AccountingLedgerApp {
         }
 
     }
+
     // display transactions from the current month
     private static void displayMonthToDate() {
         LocalDate today = LocalDate.now();
@@ -301,3 +302,22 @@ public class AccountingLedgerApp {
         }
     }
 
+    // display transactions from the previous month
+    private static void displayPreviousMonth()
+    {
+        LocalDate previousMonth = LocalDate.now().minusMonths(1);
+
+        List<Transaction> transactions = loadTransactions();
+
+        for(int i = transactions.size() -1; i >= 0; i--)
+        {
+            Transaction transaction = transactions.get(i);
+            if (transaction.getDate().getMonth() == previousMonth.getMonth()
+                    && transaction.getDate().getYear() == previousMonth.getYear())
+            {
+                System.out.println(transaction);
+            }
+        }
+    }
+
+}

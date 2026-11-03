@@ -333,13 +333,25 @@ public class AccountingLedgerApp {
                 RESET
         );
 
-        System.out.print("Enter description: ");
+        System.out.print(
+                getText("Enter description: ",
+                        "Ingrese descripcion: "
+                )
+        );
         String paymentDescription = scanner.nextLine().trim();
 
-        System.out.println("Enter vendor: ");
+        System.out.println(
+                getText("Enter vendor: ",
+                        "Ingrese proveedor: "
+                )
+        );
         String paymentVendor = scanner.nextLine().trim();
 
-        System.out.print("Enter amount: ");
+        System.out.print(
+                getText("Enter amount: ",
+                        "Ingrese monto: "
+                        )
+        );
         double paymentAmount = Double.parseDouble(scanner.nextLine().trim());
 
         // convert payments to negative dollar value

@@ -64,7 +64,11 @@ public class AccountingLedgerApp {
     private static void displayReports(Scanner scanner) {
         boolean inReports = true;
         while (inReports) {
-            System.out.println("\n=== REPORTS ===");
+            System.out.println(
+                    BLUE +
+                            "\n======= FINANCIAL REPORTS =======" +
+                    RESET
+        );
             System.out.println("1) Month to Date");
             System.out.println("2) Previous Month");
             System.out.println("3) Year to Date");
@@ -190,7 +194,7 @@ public class AccountingLedgerApp {
     }
 
     private static void addDeposit(Scanner scanner) {
-        System.out.println("\n--- ADD DEPOSIT ===");
+        System.out.println("\n=== ADD DEPOSIT ===");
 
         System.out.print("Enter description: ");
         String description = scanner.nextLine().trim();

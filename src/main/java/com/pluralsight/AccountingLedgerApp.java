@@ -1,7 +1,5 @@
 package com.pluralsight;
 import java.io.FileReader;
-import java.time.format.DateTimeFormatter;
-
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -11,8 +9,13 @@ public class AccountingLedgerApp {
     // constant for the csv file to storage path
     private static final String FILE_NAME = "transactions.csv";
 
-    // Date Format constant
-    private static final DateTimeFormatter TIME_FORMAT =  DateTimeFormatter.ofPattern("HH:mm:ss");
+    // ANSI Color Codes
+    private static final String RESET = "\u001B[0m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String Red = "\u001B[31m";
+    private static final String CYAN = "\u001B[36m";
+
 
     private static void displayLedgerMenu(Scanner scanner) {
         boolean inLedger = true;
@@ -126,7 +129,7 @@ public class AccountingLedgerApp {
     }
 
 
-    // main entry poin for the accounting ledger application
+    // main entry point for the accounting ledger application
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

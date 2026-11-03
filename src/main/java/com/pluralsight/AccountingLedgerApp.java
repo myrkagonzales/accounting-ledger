@@ -269,5 +269,28 @@ public class AccountingLedgerApp {
         }
 
     }
+    // search and display all transactions for a specific vendor
+    {
+        System.out.print("Enter vendor name: ");
+        String vendor = scanner.nextLine().trim();
+
+        List<Transaction> transactions = loadTransactions();
+        boolean found = false;
+        for(int i = transactions.size() -1; i >= 0; i--)
+        {
+            Transaction transaction = transactions.get(i);
+            if(transaction.getVendor().equalsIgnoreCase(vendor))
+            {
+                System.out.println(transaction);
+                found = true;
+            }
+        }
+        if(!found)
+        {
+            System.out.println("No transactions found for vendor: " + vendor);
+
+        }
+
+    }
 
 }

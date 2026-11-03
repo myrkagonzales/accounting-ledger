@@ -16,6 +16,9 @@ public class AccountingLedgerApp {
     private static final String RED = "\u001B[31m";
     private static final String CYAN = "\u001B[36m";
 
+    // tracks selected language
+    private static String language = "EN";
+
 
     private static void displayLedgerMenu(Scanner scanner) {
         boolean inLedger = true;
@@ -378,6 +381,7 @@ public class AccountingLedgerApp {
                 + transactions.size() +
                 RESET
         );
+
     }
 
     // search and display all transactions for a specific vendor

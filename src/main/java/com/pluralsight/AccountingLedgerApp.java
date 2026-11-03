@@ -167,13 +167,22 @@ public class AccountingLedgerApp {
 
     // make the Home Screen menu options
 
-    private static void displayHomeScreen() {
+    private static void displayHomeScreen()
+    {
+        System.out.println(BLUE);
+        System.out.println("================================================");
+        System.out.println("         EVERGREEN FINANCIAL SERVICES");
+        System.out.println("              LEDGER SYSTEM");
+        System.out.println("================================================");
+        System.out.println(RESET);
+
         System.out.println("\n=== Accounts Ledger Home ===");
         System.out.println("D) Add Deposit");
         System.out.println("P) Make Payment (Debit)");
         System.out.println("L) Ledger");
         System.out.println("X) Exit");
-        System.out.println("Enter your choice: ");
+
+        System.out.println("\nSelect an option: ");
     }
 
     private static void addDeposit(Scanner scanner) {

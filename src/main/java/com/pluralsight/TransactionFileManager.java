@@ -1,8 +1,6 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -46,6 +44,21 @@ public class TransactionFileManager {
             System.out.println("Error reading file: " + e.getMessage());
         }
         return transactions;
+    }
+    private static void saveTransaction(Transaction transaction) {
+        try (BufferedWriter writer =
+                     new BufferedWriter(
+                             new FileWriter(FILE_NAME, true))) {
+            writer.write(transaction.toCsvRow());
+            writer.newLine();
+
+
+        } catch (IOException e) {
+
+            System.out.println("Error reading transactions file: " + e.getMessage());
+
+
+        }
     }
 }
 

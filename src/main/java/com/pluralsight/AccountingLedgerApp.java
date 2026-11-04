@@ -39,7 +39,11 @@ public class AccountingLedgerApp {
 
             System.out.println(
                     GREEN +
-                            "\nWelcome to Evergreen Financial Services" +
+                            "\n" +
+                            getText(
+                                    "Welcome to Evergreen Financial Services",
+                                   "Bienvenido a Evergreen Financial Services"
+                            ) +
                     RESET
             );
             System.out.println(
@@ -74,7 +78,11 @@ public class AccountingLedgerApp {
                     inLedger = false;
                     break;
                 default:
-                    System.out.println("Invalid choice.");
+                    System.out.println(
+                            getText("Invalid choice.",
+                                    "Opcion invalida."
+                            )
+                    );
 
 
             }
@@ -149,7 +157,11 @@ public class AccountingLedgerApp {
                     inReports = false;
                     break;
                 default:
-                    System.out.println("Invalid option.");
+                    System.out.println(
+                            getText("Invalid option.",
+                                    "Opcion invalida."
+                            )
+                    );
 
             }
         }
@@ -194,10 +206,11 @@ public class AccountingLedgerApp {
         // loop between home, ledger
         boolean running = true;
 
+        System.out.println("=================================");
         System.out.println("Select Language / Seleccione Idioma");
         System.out.println("1) English");
         System.out.println("2) Espanol");
-        System.out.print("Choice: ");
+        System.out.print("Choice / Opcion: ");
 
         String languageChoice = scanner.nextLine();
 
@@ -240,6 +253,7 @@ public class AccountingLedgerApp {
                     break;
                 case "X":
                     running = false;
+
                     System.out.println(GREEN);
                     System.out.println(
                             getText("\nThank you for using Evergreen Financial Services.",
@@ -255,7 +269,11 @@ public class AccountingLedgerApp {
 
                     break;
                 default:
-                    System.out.println("Invalid option. Please select D, P, L, or X.");
+                    System.out.println(
+                            getText("Invalid option. Please select D, P, L, or X.",
+                                    "Opcion invalida. Seleccione D, P, L, o X."
+                            )
+                    );
             }
         }
         scanner.close();
@@ -296,7 +314,11 @@ public class AccountingLedgerApp {
     private static void addDeposit(Scanner scanner) {
         System.out.println(
                 GREEN +
-                        "\n===== ADD DEPOSIT =====" +
+                        "\n" +
+                        getText(
+                                "===== DEPOSIT ENTRY =====",
+                                "===== REGISTRO DE DEPOSITO ====="
+                        ) +
                 RESET
         );
 
@@ -337,7 +359,11 @@ public class AccountingLedgerApp {
     private static void makePayment(Scanner scanner) {
         System.out.println(
                 RED +
-                        "\n===== PAYMENT ENTRY =====" +
+                        "\n" +
+                        getText(
+                                "===== PAYMENT ENTRY =====",
+                                "===== REGISTRO DE PAGO ====="
+                        ) +
                 RESET
         );
 
@@ -406,7 +432,11 @@ public class AccountingLedgerApp {
 
         System.out.println(
                 CYAN +
-                        "\n===== ALL TRANSACTIONS =====" +
+                        "\n" +
+                        getText(
+                                "===== ALL TRANSACTIONS =====",
+                                "===== TODAS LAS TRANSACCIONES ====="
+                        ) +
                 RESET
         );
 
@@ -422,7 +452,11 @@ public class AccountingLedgerApp {
 
         System.out.println(
                 CYAN +
-                        "\n===== DEPOSIT TRANSACTIONS =====" +
+                        "\n" +
+                        getText(
+                                "===== DEPOSIT TRANSACTIONS =====",
+                                "===== TRANSACCIONES DE DEPOSITO ====="
+                        ) +
                 RESET
         );
 
@@ -442,7 +476,11 @@ public class AccountingLedgerApp {
 
         System.out.println(
                 CYAN +
-                        "\n===== PAYMENT TRANSACTIONS =====" +
+                        "\n" +
+                        getText(
+                                "===== PAYMENT TRANSACTIONS =====",
+                                "===== TRANSACCIONES DE PAGO ====="
+                        ) +
                 RESET
         );
 
@@ -471,21 +509,35 @@ public class AccountingLedgerApp {
         if (balance >= 0)
         {
             System.out.printf(
-                    GREEN + "\nCurrent Account Balance: $%.2f\n" + RESET,
+                    GREEN +
+                            "\n" +
+                            getText("Current Account Balance: $%.2f\n",
+                                    "Saldo Actual de la Cuenta: $%.2f\n"
+                            ) +
+                            RESET,
                     balance
             );
         }
         else
         {
             System.out.printf(
-                    RED + "\nCurrent Account Balance: $%.2f\n" + RESET,
+                    RED +
+                            "\n" +
+                            getText(
+                            "Current Account Balance: $%.2f\n",
+                                    "Saldo Actual de la Cuenta: $%.2f\n"
+                            ) +
+                            RESET,
                     balance
             );
         }
         System.out.println(
                 CYAN +
-                "Total Transactions: "
-                + transactions.size() +
+                        getText(
+                "Total Transactions: ",
+                "Total de Transacciones: "
+                        )
+                        + transactions.size() +
                 RESET
         );
 

@@ -7,7 +7,11 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class AccountingLedgerApp {
-    // constant for the csv file to storage path
+
+    // ======================================================
+    // CONSTANTS & APPLICATION SETTINGS
+    // ======================================================
+
     private static final String FILE_NAME = "transactions.csv";
 
     // ANSI Color Codes
@@ -19,6 +23,10 @@ public class AccountingLedgerApp {
 
     // tracks selected language
     private static String language = "EN";
+
+    // ======================================================
+    // HELPER METHODS
+    // ======================================================
 
     // returns English or spanish text based on selected language
     private static String getText(String english, String spanish) {
@@ -43,121 +51,9 @@ public class AccountingLedgerApp {
         System.out.println(getText("Invalid option.", "Opcion invalida."));
     }
 
-
-    private static void displayLedgerMenu(Scanner scanner) {
-        boolean inLedger = true;
-
-        while (inLedger) {
-
-            displayBalance();
-
-            System.out.println(GREEN + "\n" + getText("Welcome to Evergreen Financial Services", "Bienvenido a Evergreen Financial Services") + RESET);
-            System.out.println(CYAN + "\n" + getText("========== EVERGREEN LEDGER ==========", "========== LIBRO MAYOR EVERGREEN ==========") + RESET);
-
-            System.out.println(getText("A) All Entries", "A) Todas las Transacciones"));
-            System.out.println(getText("D) Deposits Only", "D) Solo Depositos"));
-            System.out.println(getText("P) Payments Only", "P) Solo Pagos"));
-            System.out.println(getText("R) Reports", "R) Reportes"));
-            System.out.println(getText("H) Home", "Inicio"
-
-            ));
-            System.out.print(getText("Enter choice: ", "Ingrese una opcion: "));
-
-            String choice = scanner.nextLine().trim().toUpperCase();
-
-            switch (choice) {
-                case "A":
-                    displayTransactions();
-                    break;
-                case "D":
-                    displayDeposits();
-                    break;
-                case "P":
-                    displayPayments();
-                    break;
-                case "R":
-                    displayReports(scanner);
-                    break;
-                case "H":
-                    inLedger = false;
-                    break;
-                default:
-                    System.out.println(getText("Invalid choice.", "Opcion invalida."));
-
-
-            }
-
-        }
-    }
-
-    // display reports menu and handle report selection
-    private static void displayReports(Scanner scanner) {
-        boolean inReports = true;
-        while (inReports) {
-            System.out.println(BLUE + "\n" + getText("======= FINANCIAL REPORTS =======", "======= REPORTES FINANCIEROS =======") + RESET);
-            System.out.println(getText("1) Month to Date", "1) Mes Actual"));
-            System.out.println(getText("2) Previous Month", "2) Mes Anterior"));
-            System.out.println(getText("3) Year to Date", "3) Ano Actual"));
-            System.out.println(getText("4) Previous Year", "4) Ano Anterior"));
-            System.out.println(getText("5) Search by Vendor", "5) Buscar por Proveedor"));
-            System.out.println(getText("0) Back", "0) Regresar"));
-
-            System.out.print(getText("Enter choice: ", "Ingrese una opcion: "));
-
-            String choice = scanner.nextLine().trim();
-
-            switch (choice) {
-                case "1":
-                    displayMonthToDate();
-                    break;
-                case "2":
-                    displayPreviousMonth();
-                    break;
-                case "3":
-                    displayYearToDate();
-                    break;
-                case "4":
-                    displayPreviousYear();
-                    break;
-                case "5":
-                    searchByVendor(scanner);
-                    break;
-                case "0":
-                    inReports = false;
-                    break;
-                default:
-                    System.out.println(getText("Invalid option.", "Opcion invalida."));
-
-            }
-        }
-    }
-
-    private static List<Transaction> loadTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-
-                // split line by pipe character "|"
-                String[] parts = line.split("\\|");
-                if (parts.length == 5) {
-                    LocalDate date = LocalDate.parse(parts[0].trim());
-                    LocalTime time = LocalTime.parse(parts[1].trim());
-                    String description = parts[2].trim();
-                    String vendor = parts[3].trim();
-                    double amount = Double.parseDouble(parts[4].trim());
-                    transactions.add(new Transaction(date, time, description, vendor, amount));
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-        return transactions;
-    }
-
+    // ======================================================
+    // APPLICATION ENTRY POINT
+    // ======================================================
 
     // main entry point for the accounting ledger application
 
@@ -226,6 +122,10 @@ public class AccountingLedgerApp {
         scanner.close();
     }
 
+    // ======================================================
+    // HOME SCREEN
+    // ======================================================
+
     // make the Home Screen menu options
 
     private static void displayHomeScreen() {
@@ -288,6 +188,38 @@ public class AccountingLedgerApp {
         saveTransaction(payment);
     }
 
+    // ======================================================
+    // FILE OPERATIONS
+    // ======================================================
+
+
+    private static List<Transaction> loadTransactions() {
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                // split line by pipe character "|"
+                String[] parts = line.split("\\|");
+                if (parts.length == 5) {
+                    LocalDate date = LocalDate.parse(parts[0].trim());
+                    LocalTime time = LocalTime.parse(parts[1].trim());
+                    String description = parts[2].trim();
+                    String vendor = parts[3].trim();
+                    double amount = Double.parseDouble(parts[4].trim());
+                    transactions.add(new Transaction(date, time, description, vendor, amount));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return transactions;
+    }
+
+
     private static void saveTransaction(Transaction transaction) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
             writer.write(transaction.toCsvRow());
@@ -298,6 +230,56 @@ public class AccountingLedgerApp {
         } catch (IOException e) {
             System.out.println("Error reading transactions file: " + e.getMessage());
 
+
+        }
+    }
+
+    // ======================================================
+    // LEDGER MENU
+    // ======================================================
+
+    private static void displayLedgerMenu(Scanner scanner) {
+        boolean inLedger = true;
+
+        while (inLedger) {
+
+            displayBalance();
+
+            System.out.println(GREEN + "\n" + getText("Welcome to Evergreen Financial Services", "Bienvenido a Evergreen Financial Services") + RESET);
+            System.out.println(CYAN + "\n" + getText("========== EVERGREEN LEDGER ==========", "========== LIBRO MAYOR EVERGREEN ==========") + RESET);
+
+            System.out.println(getText("A) All Entries", "A) Todas las Transacciones"));
+            System.out.println(getText("D) Deposits Only", "D) Solo Depositos"));
+            System.out.println(getText("P) Payments Only", "P) Solo Pagos"));
+            System.out.println(getText("R) Reports", "R) Reportes"));
+            System.out.println(getText("H) Home", "Inicio"
+
+            ));
+            System.out.print(getText("Enter choice: ", "Ingrese una opcion: "));
+
+            String choice = scanner.nextLine().trim().toUpperCase();
+
+            switch (choice) {
+                case "A":
+                    displayTransactions();
+                    break;
+                case "D":
+                    displayDeposits();
+                    break;
+                case "P":
+                    displayPayments();
+                    break;
+                case "R":
+                    displayReports(scanner);
+                    break;
+                case "H":
+                    inLedger = false;
+                    break;
+                default:
+                    System.out.println(getText("Invalid choice.", "Opcion invalida."));
+
+
+            }
 
         }
     }
@@ -362,6 +344,52 @@ public class AccountingLedgerApp {
         }
         System.out.println(CYAN + getText("Total Transactions: ", "Total de Transacciones: ") + transactions.size() + RESET);
 
+    }
+
+    // ======================================================
+    // REPORTS
+    // ======================================================
+
+    // display reports menu and handle report selection
+    private static void displayReports(Scanner scanner) {
+        boolean inReports = true;
+        while (inReports) {
+            System.out.println(BLUE + "\n" + getText("======= FINANCIAL REPORTS =======", "======= REPORTES FINANCIEROS =======") + RESET);
+            System.out.println(getText("1) Month to Date", "1) Mes Actual"));
+            System.out.println(getText("2) Previous Month", "2) Mes Anterior"));
+            System.out.println(getText("3) Year to Date", "3) Ano Actual"));
+            System.out.println(getText("4) Previous Year", "4) Ano Anterior"));
+            System.out.println(getText("5) Search by Vendor", "5) Buscar por Proveedor"));
+            System.out.println(getText("0) Back", "0) Regresar"));
+
+            System.out.print(getText("Enter choice: ", "Ingrese una opcion: "));
+
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    displayMonthToDate();
+                    break;
+                case "2":
+                    displayPreviousMonth();
+                    break;
+                case "3":
+                    displayYearToDate();
+                    break;
+                case "4":
+                    displayPreviousYear();
+                    break;
+                case "5":
+                    searchByVendor(scanner);
+                    break;
+                case "0":
+                    inReports = false;
+                    break;
+                default:
+                    System.out.println(getText("Invalid option.", "Opcion invalida."));
+
+            }
+        }
     }
 
     // search and display all transactions for a specific vendor
@@ -456,5 +484,4 @@ public class AccountingLedgerApp {
             }
         }
     }
-
 }

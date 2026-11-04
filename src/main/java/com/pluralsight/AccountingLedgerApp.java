@@ -1,4 +1,6 @@
 package com.pluralsight;
+
+import java.io.FileReader;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,13 +21,26 @@ public class AccountingLedgerApp {
     private static String language = "EN";
 
     // returns English or spanish text based on selected language
-    private static String getText(String english, String spanish)
-    {
-        if(language.equals("ES"))
-        {
+    private static String getText(String english, String spanish) {
+        if (language.equals("ES")) {
             return spanish;
         }
         return english;
+    }
+
+    // header helper
+    private static void printHeader(String color, String english, String spanish) {
+        System.out.println(color + "\n" + getText(english, spanish) + RESET);
+    }
+
+    // message helper
+    private static void printTransactionSaved() {
+        System.out.println(GREEN + getText("✓ Transaction successfully saved.", "✓ Transaccion guardada exitosamente.") + RESET);
+
+    }
+
+    private static void printInvalidOption() {
+        System.out.println(getText("Invalid option.", "Opcion invalida."));
     }
 
 
@@ -36,62 +51,17 @@ public class AccountingLedgerApp {
 
             displayBalance();
 
-            System.out.println(
-                    GREEN +
-                            "\n" +
-                            getText(
-                                    "Welcome to Evergreen Financial Services",
-                                   "Bienvenido a Evergreen Financial Services"
-                            ) +
-                    RESET
-            );
-            System.out.println(
-                    CYAN +
-                            "\n" +
-                            getText(
-                            "========== EVERGREEN LEDGER ==========",
-                                    "========== LIBRO MAYOR EVERGREEN =========="
-                            ) +
-                    RESET
-            );
+            System.out.println(GREEN + "\n" + getText("Welcome to Evergreen Financial Services", "Bienvenido a Evergreen Financial Services") + RESET);
+            System.out.println(CYAN + "\n" + getText("========== EVERGREEN LEDGER ==========", "========== LIBRO MAYOR EVERGREEN ==========") + RESET);
 
-            System.out.println(
-                    getText(
-                            "A) All Entries",
-                            "A) Todas las Transacciones"
-                    )
-            );
-            System.out.println(
-                    getText(
-                            "D) Deposits Only",
-                            "D) Solo Depositos"
-                    )
-            );
-            System.out.println(
-                    getText(
-                            "P) Payments Only",
-                            "P) Solo Pagos"
-                    )
-            );
-            System.out.println(
-                    getText(
-                            "R) Reports",
-                            "R) Reportes"
-                            )
-            );
-            System.out.println(
-                    getText(
-                            "H) Home",
-                            "Inicio"
+            System.out.println(getText("A) All Entries", "A) Todas las Transacciones"));
+            System.out.println(getText("D) Deposits Only", "D) Solo Depositos"));
+            System.out.println(getText("P) Payments Only", "P) Solo Pagos"));
+            System.out.println(getText("R) Reports", "R) Reportes"));
+            System.out.println(getText("H) Home", "Inicio"
 
-                            )
-            );
-            System.out.print(
-                    getText(
-                            "Enter choice: ",
-                            "Ingrese una opcion: "
-                            )
-            );
+            ));
+            System.out.print(getText("Enter choice: ", "Ingrese una opcion: "));
 
             String choice = scanner.nextLine().trim().toUpperCase();
 
@@ -112,11 +82,7 @@ public class AccountingLedgerApp {
                     inLedger = false;
                     break;
                 default:
-                    System.out.println(
-                            getText("Invalid choice.",
-                                    "Opcion invalida."
-                            )
-                    );
+                    System.out.println(getText("Invalid choice.", "Opcion invalida."));
 
 
             }
@@ -128,50 +94,15 @@ public class AccountingLedgerApp {
     private static void displayReports(Scanner scanner) {
         boolean inReports = true;
         while (inReports) {
-            System.out.println(
-                    BLUE +
-                            "\n" +
-                            getText(
-                                    "======= FINANCIAL REPORTS =======",
-                                    "======= REPORTES FINANCIEROS ======="
-                            ) +
-                    RESET
-        );
-            System.out.println(
-                    getText("1) Month to Date",
-                            "1) Mes Actual"
-                    )
-            );
-            System.out.println(
-                    getText("2) Previous Month",
-                            "2) Mes Anterior"
-                    )
-            );
-            System.out.println(
-                    getText("3) Year to Date",
-                            "3) Ano Actual"
-                    )
-            );
-            System.out.println(
-                    getText("4) Previous Year", "4) Ano Anterior"
-                    )
-            );
-            System.out.println(
-                    getText("5) Search by Vendor",
-                            "5) Buscar por Proveedor"
-                    )
-            );
-            System.out.println(
-                    getText("0) Back",
-                            "0) Regresar"
-                    )
-            );
+            System.out.println(BLUE + "\n" + getText("======= FINANCIAL REPORTS =======", "======= REPORTES FINANCIEROS =======") + RESET);
+            System.out.println(getText("1) Month to Date", "1) Mes Actual"));
+            System.out.println(getText("2) Previous Month", "2) Mes Anterior"));
+            System.out.println(getText("3) Year to Date", "3) Ano Actual"));
+            System.out.println(getText("4) Previous Year", "4) Ano Anterior"));
+            System.out.println(getText("5) Search by Vendor", "5) Buscar por Proveedor"));
+            System.out.println(getText("0) Back", "0) Regresar"));
 
-            System.out.print(
-                    getText("Enter choice: ",
-                            "Ingrese una opcion: "
-                    )
-            );
+            System.out.print(getText("Enter choice: ", "Ingrese una opcion: "));
 
             String choice = scanner.nextLine().trim();
 
@@ -195,16 +126,37 @@ public class AccountingLedgerApp {
                     inReports = false;
                     break;
                 default:
-                    System.out.println(
-                            getText("Invalid option.",
-                                    "Opcion invalida."
-                            )
-                    );
+                    System.out.println(getText("Invalid option.", "Opcion invalida."));
 
             }
         }
     }
 
+    private static List<Transaction> loadTransactions() {
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                // split line by pipe character "|"
+                String[] parts = line.split("\\|");
+                if (parts.length == 5) {
+                    LocalDate date = LocalDate.parse(parts[0].trim());
+                    LocalTime time = LocalTime.parse(parts[1].trim());
+                    String description = parts[2].trim();
+                    String vendor = parts[3].trim();
+                    double amount = Double.parseDouble(parts[4].trim());
+                    transactions.add(new Transaction(date, time, description, vendor, amount));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return transactions;
+    }
 
 
     // main entry point for the accounting ledger application
@@ -222,19 +174,13 @@ public class AccountingLedgerApp {
 
         String languageChoice = scanner.nextLine();
 
-        if(languageChoice.equals("2"))
-        {
+        if (languageChoice.equals("2")) {
             language = "ES";
         }
 
         System.out.println(GREEN);
         System.out.println("Evergreen Financial Services");
-        System.out.println(
-                getText(
-                        "Secure. Reliable. Professional",
-                        "Seguro, Confiable, Profesional"
-                )
-        );
+        System.out.println(getText("Secure. Reliable. Professional", "Seguro, Confiable, Profesional"));
         System.out.println(RESET);
 
         System.out.println(BLUE);
@@ -268,25 +214,13 @@ public class AccountingLedgerApp {
                     running = false;
 
                     System.out.println(GREEN);
-                    System.out.println(
-                            getText("\nThank you for using Evergreen Financial Services.",
-                                    "\nGracias por utlilizar Evergreen Financial Services."
-                            )
-                    );
-                    System.out.println(
-                            getText("Session ended successfully.",
-                                    "Sesion finalizada exitosamente."
-                                    )
-                    );
+                    System.out.println(getText("\nThank you for using Evergreen Financial Services.", "\nGracias por utlilizar Evergreen Financial Services."));
+                    System.out.println(getText("Session ended successfully.", "Sesion finalizada exitosamente."));
                     System.out.println(RESET);
 
                     break;
                 default:
-                    System.out.println(
-                            getText("Invalid option. Please select D, P, L, or X.",
-                                    "Opcion invalida. Seleccione D, P, L, o X."
-                            )
-                    );
+                    printInvalidOption();
             }
         }
         scanner.close();
@@ -294,73 +228,28 @@ public class AccountingLedgerApp {
 
     // make the Home Screen menu options
 
-    private static void displayHomeScreen()
-    {
+    private static void displayHomeScreen() {
 
-        System.out.println(
-                "\n" +
-                        getText(
-                                "=== EVERGREEN HOME MENU ===",
-                                "=== MENU PRINCIPAL EVERGREEN ==="
-                        )
-        );
-        System.out.println(
-                getText(
-                "D) Add Deposit",
-                 "D) Agregar Deposito"
-                )
-        );
-        System.out.println(
-                getText(
-                "P) Make Payment (Debit)",
-                        "P) Realizar Pago"
-                )
-        );
-        System.out.println(
-                getText("L) Ledger",
-                        "L) Libro Mayor"
-                )
-        );
-        System.out.println(
-                getText("X) Exit",
-                        "X) Salir"
-                )
-        );
+        System.out.println("\n" + getText("=== EVERGREEN HOME MENU ===", "=== MENU PRINCIPAL EVERGREEN ==="));
+        System.out.println(getText("D) Add Deposit", "D) Agregar Deposito"));
+        System.out.println(getText("P) Make Payment (Debit)", "P) Realizar Pago"));
+        System.out.println(getText("L) Ledger", "L) Libro Mayor"));
+        System.out.println(getText("X) Exit", "X) Salir"));
 
         System.out.println("\nSelect an option: ");
     }
 
     private static void addDeposit(Scanner scanner) {
-        System.out.println(
-                GREEN +
-                        "\n" +
-                        getText(
-                                "===== DEPOSIT ENTRY =====",
-                                "===== REGISTRO DE DEPOSITO ====="
-                        ) +
-                RESET
-        );
+        System.out.println(GREEN + "\n" + getText("===== DEPOSIT ENTRY =====", "===== REGISTRO DE DEPOSITO =====") + RESET);
 
-        System.out.print(
-                getText("Enter description: ",
-                        "Ingrese descripcion: "
-                )
-        );
+        System.out.print(getText("Enter description: ", "Ingrese descripcion: "));
         String description = scanner.nextLine().trim();
 
-        System.out.print(
-                getText("Enter vendor: ",
-                        "Ingrese proveedor: "
-                )
-        );
+        System.out.print(getText("Enter vendor: ", "Ingrese proveedor: "));
 
         String vendor = scanner.nextLine().trim();
 
-        System.out.print(
-                getText("Enter deposit amount: ",
-                        "Ingrese monto de depsosito: "
-                )
-        );
+        System.out.print(getText("Enter deposit amount: ", "Ingrese monto de depsosito: "));
 
         double amount = Double.parseDouble(scanner.nextLine().trim());
 
@@ -376,35 +265,15 @@ public class AccountingLedgerApp {
     }
 
     private static void makePayment(Scanner scanner) {
-        System.out.println(
-                RED +
-                        "\n" +
-                        getText(
-                                "===== PAYMENT ENTRY =====",
-                                "===== REGISTRO DE PAGO ====="
-                        ) +
-                RESET
-        );
+        System.out.println(RED + "\n" + getText("===== PAYMENT ENTRY =====", "===== REGISTRO DE PAGO =====") + RESET);
 
-        System.out.print(
-                getText("Enter description: ",
-                        "Ingrese descripcion: "
-                )
-        );
+        System.out.print(getText("Enter description: ", "Ingrese descripcion: "));
         String paymentDescription = scanner.nextLine().trim();
 
-        System.out.println(
-                getText("Enter vendor: ",
-                        "Ingrese proveedor: "
-                )
-        );
+        System.out.println(getText("Enter vendor: ", "Ingrese proveedor: "));
         String paymentVendor = scanner.nextLine().trim();
 
-        System.out.print(
-                getText("Enter amount: ",
-                        "Ingrese monto: "
-                        )
-        );
+        System.out.print(getText("Enter amount: ", "Ingrese monto: "));
         double paymentAmount = Double.parseDouble(scanner.nextLine().trim());
 
         // convert payments to negative dollar value
@@ -415,13 +284,7 @@ public class AccountingLedgerApp {
         LocalTime paymentTime = LocalTime.now();
 
         // instantiate transaction and save
-        Transaction payment = new Transaction(
-                paymentDate,
-                paymentTime,
-                paymentDescription,
-                paymentVendor,
-                paymentAmount
-        );
+        Transaction payment = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
         saveTransaction(payment);
     }
 
@@ -429,15 +292,8 @@ public class AccountingLedgerApp {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
             writer.write(transaction.toCsvRow());
             writer.newLine();
-            System.out.println(
-                    GREEN +
-                            getText(
-                            "✓ Transaction successfully saved.",
-                                    "✓ Transaccion guardada exitosamente."
-                            ) +
-                            RESET
 
-            );
+            printTransactionSaved();
 
         } catch (IOException e) {
             System.out.println("Error reading transactions file: " + e.getMessage());
@@ -449,18 +305,9 @@ public class AccountingLedgerApp {
     // display all ledger entries newest first
     private static void displayTransactions() {
 
-        System.out.println(
-                CYAN +
-                        "\n" +
-                        getText(
-                                "===== ALL TRANSACTIONS =====",
-                                "===== TODAS LAS TRANSACCIONES ====="
-                        ) +
-                RESET
-        );
+        printHeader(CYAN, "===== ALL TRANSACTIONS =====", "===== TODAS LAS TRANSACCIONES =====");
 
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+        List<Transaction> transactions = loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             System.out.println(transactions.get(i));
@@ -470,18 +317,9 @@ public class AccountingLedgerApp {
     // show deposits only with newest transactions first
     private static void displayDeposits() {
 
-        System.out.println(
-                CYAN +
-                        "\n" +
-                        getText(
-                                "===== DEPOSIT TRANSACTIONS =====",
-                                "===== TRANSACCIONES DE DEPOSITO ====="
-                        ) +
-                RESET
-        );
+        printHeader(CYAN, "===== DEPOSIT TRANSACTIONS =====", "===== TRANSACCIONES DE DEPOSITO =====");
 
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+        List<Transaction> transactions = loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
@@ -495,18 +333,9 @@ public class AccountingLedgerApp {
     // show payments only with newest transaction first
     private static void displayPayments() {
 
-        System.out.println(
-                CYAN +
-                        "\n" +
-                        getText(
-                                "===== PAYMENT TRANSACTIONS =====",
-                                "===== TRANSACCIONES DE PAGO ====="
-                        ) +
-                RESET
-        );
+        printHeader(CYAN, "===== PAYMENT TRANSACTIONS =====", "===== TRANSACCIONES DE PAGO =====");
 
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+        List<Transaction> transactions = loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
@@ -519,78 +348,33 @@ public class AccountingLedgerApp {
     }
 
     // Calculate and display current account balance
-    private static void displayBalance()
-    {
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+    private static void displayBalance() {
+        List<Transaction> transactions = loadTransactions();
 
         double balance = 0;
-        for (Transaction transaction : transactions)
-        {
+        for (Transaction transaction : transactions) {
             balance += transaction.getAmount();
         }
-        if (balance >= 0)
-        {
-            System.out.printf(
-                    GREEN +
-                            "\n" +
-                            getText("Current Account Balance: $%.2f\n",
-                                    "Saldo Actual de la Cuenta: $%.2f\n"
-                            ) +
-                            RESET,
-                    balance
-            );
+        if (balance >= 0) {
+            System.out.printf(GREEN + "\n" + getText("Current Account Balance: $%.2f\n", "Saldo Actual de la Cuenta: $%.2f\n") + RESET, balance);
+        } else {
+            System.out.printf(RED + "\n" + getText("Current Account Balance: $%.2f\n", "Saldo Actual de la Cuenta: $%.2f\n") + RESET, balance);
         }
-        else
-        {
-            System.out.printf(
-                    RED +
-                            "\n" +
-                            getText(
-                            "Current Account Balance: $%.2f\n",
-                                    "Saldo Actual de la Cuenta: $%.2f\n"
-                            ) +
-                            RESET,
-                    balance
-            );
-        }
-        System.out.println(
-                CYAN +
-                        getText(
-                "Total Transactions: ",
-                "Total de Transacciones: "
-                        )
-                        + transactions.size() +
-                RESET
-        );
+        System.out.println(CYAN + getText("Total Transactions: ", "Total de Transacciones: ") + transactions.size() + RESET);
 
     }
 
     // search and display all transactions for a specific vendor
-    private static void searchByVendor(Scanner scanner)
-    {
-        System.out.println(
-                CYAN +
-                        "\n" +
-                        getText("===== VENDOR SEARCH =====",
-                                "===== BUSQUEDA DE PROVEEDOR ====="
-                        )+
-                RESET
-        );
+    private static void searchByVendor(Scanner scanner) {
+        printHeader(CYAN, "===== VENDOR SEARCH =====", "===== BUSQUEDA DE PROVEEDOR =====");
 
-        System.out.print(
-                getText("Enter vendor name: ",
-                        "Ingrese nombre del proveedor: "
-                        )
-        );
+        System.out.print(getText("Enter vendor name: ", "Ingrese nombre del proveedor: "));
         String searchByVendor = scanner.nextLine().trim();
 
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+        List<Transaction> transactions = loadTransactions();
 
         boolean found = false;
-        for (int i = transactions.size() - 1; i >= 0; i--)
-        {
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
             if (transaction.getVendor().equalsIgnoreCase(searchByVendor)) {
                 System.out.println(transaction);
@@ -598,11 +382,7 @@ public class AccountingLedgerApp {
             }
         }
         if (!found) {
-            System.out.println(
-                    getText("No transactions found for vendor: " + searchByVendor,
-                            "No se encontraron transacciones para el proveedor: "
-                    )
-            );
+            System.out.println(getText("No transactions found for vendor: " + searchByVendor, "No se encontraron transacciones para el proveedor: "));
 
         }
 
@@ -611,111 +391,67 @@ public class AccountingLedgerApp {
     // display transactions from the current month
     private static void displayMonthToDate() {
 
-        System.out.println(
-                CYAN +
-                        "\n" +
-                        getText("===== MONTH TO DATE REPORT =====",
-                                "===== REPORTE DEL MES ACTUAL ====="
-                        ) +
-                RESET
-        );
+        System.out.println(CYAN + "\n" + getText("===== MONTH TO DATE REPORT =====", "===== REPORTE DEL MES ACTUAL =====") + RESET);
 
         LocalDate today = LocalDate.now();
 
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+        List<Transaction> transactions = loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
-            if (transaction.getDate().getMonth() == today.getMonth()
-                    && transaction.getDate().getYear() == today.getYear()) {
+            if (transaction.getDate().getMonth() == today.getMonth() && transaction.getDate().getYear() == today.getYear()) {
                 System.out.println(transaction);
             }
         }
     }
 
     // display transactions from the previous month
-    private static void displayPreviousMonth()
-    {
+    private static void displayPreviousMonth() {
 
-        System.out.println(
-                CYAN +
-                        "\n" +
-                        getText(
-                        "===== PREVIOUS MONTH REPORT =====",
-                                "===== REPORTE DEL MES ANTERIOR ====="
-                        ) +
-                RESET
-        );
+        System.out.println(CYAN + "\n" + getText("===== PREVIOUS MONTH REPORT =====", "===== REPORTE DEL MES ANTERIOR =====") + RESET);
 
         LocalDate previousMonth = LocalDate.now().minusMonths(1);
 
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+        List<Transaction> transactions = loadTransactions();
 
-        for(int i = transactions.size() -1; i >= 0; i--)
-        {
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
-            if (transaction.getDate().getMonth() == previousMonth.getMonth()
-                    && transaction.getDate().getYear() == previousMonth.getYear())
-            {
+            if (transaction.getDate().getMonth() == previousMonth.getMonth() && transaction.getDate().getYear() == previousMonth.getYear()) {
                 System.out.println(transaction);
             }
         }
     }
 
     // display transactions from the current year
-    private static void displayYearToDate()
-    {
+    private static void displayYearToDate() {
 
-        System.out.println(
-                CYAN +
-                        "\n" +
-                        getText(
-                        "===== YEAR TO DATE REPORT =====",
-                        "===== REPORTE DEL ANO ACTUAL ====="
-                        ) +
-                RESET
-        );
+        System.out.println(CYAN + "\n" + getText("===== YEAR TO DATE REPORT =====", "===== REPORTE DEL ANO ACTUAL =====") + RESET);
 
         int currentYear = LocalDate.now().getYear();
 
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+        List<Transaction> transactions = loadTransactions();
 
-        for(int i = transactions.size() -1; i >= 0; i --)
-        {
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
-            if (transaction.getDate().getYear() == currentYear)
-            {
+            if (transaction.getDate().getYear() == currentYear) {
                 System.out.println(transaction);
             }
         }
     }
-    // display transactions from the previous year
-    private static void displayPreviousYear()
-    {
 
-        System.out.println(
-                CYAN +
-                        "\n" +
-                        getText("===== PREVIOUS YEAR REPORT =====",
-                                "===== REPORTE DEL ANO ANTERIOR ====="
-                        ) +
-                RESET
-        );
+    // display transactions from the previous year
+    private static void displayPreviousYear() {
+
+        System.out.println(CYAN + "\n" + getText("===== PREVIOUS YEAR REPORT =====", "===== REPORTE DEL ANO ANTERIOR =====") + RESET);
 
         int previousYear = LocalDate.now().minusYears(1).getYear();
 
-        List<Transaction> transactions =
-                TransactionFileManager.loadTransactions();
+        List<Transaction> transactions = loadTransactions();
 
-        for (int i = transactions.size() -1; i >= 0; i--)
-        {
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
 
-            if(transaction.getDate().getYear() == previousYear)
-            {
+            if (transaction.getDate().getYear() == previousYear) {
                 System.out.println(transaction);
             }
         }

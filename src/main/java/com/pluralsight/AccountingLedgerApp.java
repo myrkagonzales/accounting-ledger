@@ -1,5 +1,4 @@
 package com.pluralsight;
-import java.io.FileReader;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -48,16 +47,51 @@ public class AccountingLedgerApp {
             );
             System.out.println(
                     CYAN +
-                            "\n========== EVERGREEN LEDGER ==========" +
+                            "\n" +
+                            getText(
+                            "========== EVERGREEN LEDGER ==========",
+                                    "========== LIBRO MAYOR EVERGREEN =========="
+                            ) +
                     RESET
             );
 
-            System.out.println("A) All Entries");
-            System.out.println("D) Deposits Only");
-            System.out.println("P) Payments Only");
-            System.out.println("R) Reports");
-            System.out.println("H) Home");
-            System.out.print("Enter choice: ");
+            System.out.println(
+                    getText(
+                            "A) All Entries",
+                            "A) Todas las Transacciones"
+                    )
+            );
+            System.out.println(
+                    getText(
+                            "D) Deposits Only",
+                            "D) Solo Depositos"
+                    )
+            );
+            System.out.println(
+                    getText(
+                            "P) Payments Only",
+                            "P) Solo Pagos"
+                    )
+            );
+            System.out.println(
+                    getText(
+                            "R) Reports",
+                            "R) Reportes"
+                            )
+            );
+            System.out.println(
+                    getText(
+                            "H) Home",
+                            "Inicio"
+
+                            )
+            );
+            System.out.print(
+                    getText(
+                            "Enter choice: ",
+                            "Ingrese una opcion: "
+                            )
+            );
 
             String choice = scanner.nextLine().trim().toUpperCase();
 
@@ -96,7 +130,11 @@ public class AccountingLedgerApp {
         while (inReports) {
             System.out.println(
                     BLUE +
-                            "\n======= FINANCIAL REPORTS =======" +
+                            "\n" +
+                            getText(
+                                    "======= FINANCIAL REPORTS =======",
+                                    "======= REPORTES FINANCIEROS ======="
+                            ) +
                     RESET
         );
             System.out.println(
@@ -167,36 +205,6 @@ public class AccountingLedgerApp {
         }
     }
 
-    private static List<Transaction> loadTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-
-                // split line by pipe character "|"
-                String[] parts = line.split("\\|");
-                if (parts.length == 5) {
-                    LocalDate date = LocalDate.parse(parts[0].trim());
-                    LocalTime time = LocalTime.parse(parts[1].trim());
-                    String description = parts[2].trim();
-                    String vendor = parts[3].trim();
-                    double amount = Double.parseDouble(parts[4].trim());
-                    transactions.add(new Transaction(
-                            date,
-                            time,
-                            description,
-                            vendor,
-                            amount));
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-        return transactions;
-    }
 
 
     // main entry point for the accounting ledger application
@@ -221,7 +229,12 @@ public class AccountingLedgerApp {
 
         System.out.println(GREEN);
         System.out.println("Evergreen Financial Services");
-        System.out.println("Secure. Reliable. Professional");
+        System.out.println(
+                getText(
+                        "Secure. Reliable. Professional",
+                        "Seguro, Confiable, Profesional"
+                )
+        );
         System.out.println(RESET);
 
         System.out.println(BLUE);
@@ -284,7 +297,13 @@ public class AccountingLedgerApp {
     private static void displayHomeScreen()
     {
 
-        System.out.println("\n=== EVERGREEN HOME MENU ===");
+        System.out.println(
+                "\n" +
+                        getText(
+                                "=== EVERGREEN HOME MENU ===",
+                                "=== MENU PRINCIPAL EVERGREEN ==="
+                        )
+        );
         System.out.println(
                 getText(
                 "D) Add Deposit",
@@ -440,7 +459,8 @@ public class AccountingLedgerApp {
                 RESET
         );
 
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             System.out.println(transactions.get(i));
@@ -460,7 +480,8 @@ public class AccountingLedgerApp {
                 RESET
         );
 
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
@@ -484,7 +505,8 @@ public class AccountingLedgerApp {
                 RESET
         );
 
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
@@ -499,7 +521,8 @@ public class AccountingLedgerApp {
     // Calculate and display current account balance
     private static void displayBalance()
     {
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         double balance = 0;
         for (Transaction transaction : transactions)
@@ -562,7 +585,8 @@ public class AccountingLedgerApp {
         );
         String searchByVendor = scanner.nextLine().trim();
 
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         boolean found = false;
         for (int i = transactions.size() - 1; i >= 0; i--)
@@ -598,7 +622,8 @@ public class AccountingLedgerApp {
 
         LocalDate today = LocalDate.now();
 
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         for (int i = transactions.size() - 1; i >= 0; i--) {
             Transaction transaction = transactions.get(i);
@@ -625,7 +650,8 @@ public class AccountingLedgerApp {
 
         LocalDate previousMonth = LocalDate.now().minusMonths(1);
 
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         for(int i = transactions.size() -1; i >= 0; i--)
         {
@@ -654,7 +680,8 @@ public class AccountingLedgerApp {
 
         int currentYear = LocalDate.now().getYear();
 
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         for(int i = transactions.size() -1; i >= 0; i --)
         {
@@ -680,7 +707,8 @@ public class AccountingLedgerApp {
 
         int previousYear = LocalDate.now().minusYears(1).getYear();
 
-        List<Transaction> transactions = loadTransactions();
+        List<Transaction> transactions =
+                TransactionFileManager.loadTransactions();
 
         for (int i = transactions.size() -1; i >= 0; i--)
         {

@@ -9,7 +9,7 @@ import java.util.*;
 public class AccountingLedgerApp {
 
     // ======================================================
-    // CONSTANTS & APPLICATION SETTINGS
+    //       CONSTANTS & APPLICATION SETTINGS
     // ======================================================
 
     private static final String FILE_NAME = "transactions.csv";
@@ -25,7 +25,7 @@ public class AccountingLedgerApp {
     private static String language = "EN";
 
     // ======================================================
-    // HELPER METHODS
+    //                  HELPER METHODS
     // ======================================================
 
     // returns English or spanish text based on selected language
@@ -52,7 +52,7 @@ public class AccountingLedgerApp {
     }
 
     // ======================================================
-    // APPLICATION ENTRY POINT
+    //              APPLICATION ENTRY POINT
     // ======================================================
 
     // main entry point for the accounting ledger application
@@ -123,7 +123,7 @@ public class AccountingLedgerApp {
     }
 
     // ======================================================
-    // HOME SCREEN
+    //                   HOME SCREEN
     // ======================================================
 
     // make the Home Screen menu options
@@ -149,7 +149,7 @@ public class AccountingLedgerApp {
 
         String vendor = scanner.nextLine().trim();
 
-        System.out.print(getText("Enter deposit amount: ", "Ingrese monto de depsosito: "));
+        System.out.print(getText("Enter deposit amount: ", "Ingrese monto de deposito: "));
 
         double amount = Double.parseDouble(scanner.nextLine().trim());
 
@@ -189,53 +189,7 @@ public class AccountingLedgerApp {
     }
 
     // ======================================================
-    // FILE OPERATIONS
-    // ======================================================
-
-
-    private static List<Transaction> loadTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-
-                // split line by pipe character "|"
-                String[] parts = line.split("\\|");
-                if (parts.length == 5) {
-                    LocalDate date = LocalDate.parse(parts[0].trim());
-                    LocalTime time = LocalTime.parse(parts[1].trim());
-                    String description = parts[2].trim();
-                    String vendor = parts[3].trim();
-                    double amount = Double.parseDouble(parts[4].trim());
-                    transactions.add(new Transaction(date, time, description, vendor, amount));
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-        return transactions;
-    }
-
-
-    private static void saveTransaction(Transaction transaction) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
-            writer.write(transaction.toCsvRow());
-            writer.newLine();
-
-            printTransactionSaved();
-
-        } catch (IOException e) {
-            System.out.println("Error reading transactions file: " + e.getMessage());
-
-
-        }
-    }
-
-    // ======================================================
-    // LEDGER MENU
+    //                     LEDGER MENU
     // ======================================================
 
     private static void displayLedgerMenu(Scanner scanner) {
@@ -282,8 +236,8 @@ public class AccountingLedgerApp {
             }
 
         }
-    }
 
+    }
     // display all ledger entries newest first
     private static void displayTransactions() {
 
@@ -347,7 +301,7 @@ public class AccountingLedgerApp {
     }
 
     // ======================================================
-    // REPORTS
+    //                      REPORTS
     // ======================================================
 
     // display reports menu and handle report selection
@@ -410,7 +364,7 @@ public class AccountingLedgerApp {
             }
         }
         if (!found) {
-            System.out.println(getText("No transactions found for vendor: " + searchByVendor, "No se encontraron transacciones para el proveedor: "));
+            System.out.println(getText("No transactions found for vendor: " + searchByVendor, "No se encontraron transacciones para el proveedor: " + searchByVendor));
 
         }
 
@@ -484,4 +438,57 @@ public class AccountingLedgerApp {
             }
         }
     }
-}
+
+    // ======================================================
+    //                  FILE OPERATIONS
+    // ======================================================
+
+
+    private static List<Transaction> loadTransactions() {
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                // split line by pipe character "|"
+                String[] parts = line.split("\\|");
+                if (parts.length == 5) {
+                    LocalDate date = LocalDate.parse(parts[0].trim());
+                    LocalTime time = LocalTime.parse(parts[1].trim());
+                    String description = parts[2].trim();
+                    String vendor = parts[3].trim();
+                    double amount = Double.parseDouble(parts[4].trim());
+                    transactions.add(new Transaction(date, time, description, vendor, amount));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return transactions;
+    }
+
+
+
+
+
+    private static void saveTransaction(Transaction transaction) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            writer.write(transaction.toCsvRow());
+            writer.newLine();
+
+            printTransactionSaved();
+
+        } catch (IOException e) {
+            System.out.println("Error reading transactions file: " + e.getMessage());
+
+
+        }
+    }
+
+
+
+    }
+

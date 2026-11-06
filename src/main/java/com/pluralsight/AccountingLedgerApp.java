@@ -138,7 +138,7 @@ public class AccountingLedgerApp {
 
         System.out.println("\nSelect an option: ");
     }
-
+    // TRANSACTION PROCESSING
     private static void addDeposit(Scanner scanner) {
         System.out.println(GREEN + "\n" + getText("===== DEPOSIT ENTRY =====", "===== REGISTRO DE DEPOSITO =====") + RESET);
 
